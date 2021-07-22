@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
+require('dotenv/config');
 
 
 var api_url = process.env.API_HOST + '/api/status';

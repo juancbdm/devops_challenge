@@ -2,15 +2,25 @@ var express = require('express');
 var app = express();
 var uuid = require('node-uuid');
 var logger = require('morgan');
+require('dotenv/config');
+const { Pool } = require('pg');
 
-var pg = require('pg');
-var conString = process.env.DB; // "postgres://username:password@localhost/database";
+// var conString = process.env.DB; // "postgres://username:password@localhost/database";
+// const pool = new Pool({connectionString: conString});
+// Ref. https://www.luiztools.com.br/post/como-usar-nodejs-postgresql/
 
-app.use(logger('dev'));
+//Ref. https://node-postgres.com/features/connecting
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
 
 // Routes
 app.get('/api/status', function(req, res) {
-  pg.connect(conString, function(err, client, done) {
+  pool.connect(function(err, client, done) {
     if(err) {
       return res.status(500).send('error fetching client from pool');
     }
