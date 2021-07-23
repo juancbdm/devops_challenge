@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  postgres-db:
+    image: postgres:13.3
+    hostname: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: database
+    ports:
+      - '5432:5432'
+    networks:
+      - backend
+  web_api:
+    hostname: web_api
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    environment:
+      PORT: 8081
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres-db
+    networks:
+      - backend
+      - frontend
+  web_frontend:
+    hostname: web_frontend
+    build:
+      context: ./web
+      dockerfile: ./Dockerfile
+    environment:
+      PORT: 8080
+      API_HOST: http://web_api:8081
+    build: ./web
+    ports:
+      - "8080:8080"
+    depends_on:
+      - web_api
+    networks:
+      - frontend
+networks:
+  frontend:
+  backend:
