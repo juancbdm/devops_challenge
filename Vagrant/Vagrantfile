@@ -1,0 +1,14 @@
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "ubuntu/focal64"
+
+    config.vm.define "web_app_staging" do |web_app_staging|
+      web_app_staging.vm.network "public_network", bridge: "eno1", ip: "192.168.0.111"
+      web_app_staging.vm.provision "shell", inline: "cat /vagrant/ssh-keys/vagrant_id_rsa.pub >> .ssh/authorized_keys"
+      web_app_staging.vm.provider "virtualbox" do |vb|
+        vb.memory = 2048
+        vb.cpus = 3
+        vb.name = "web_app_staging"
+      end
+    end
+end
