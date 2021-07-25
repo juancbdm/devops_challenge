@@ -1,0 +1,80 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Upgrade all apt packages
+  apt: 
+    upgrade: dist
+  become: yes
+
+- name: Install dependencies
+  apt:
+    name: [
+      "apt-transport-https",
+      "ca-certificates",
+      "curl",
+      "software-properties-common",
+      "gnupg-agent",
+      "gnupg",
+      "lsb-release"
+    ]
+  become: yes
+
+- name: Add an apt signing key for Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  become: yes
+
+- name: Add apt repository for stable version
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+    state: present
+  become: yes
+
+- name: Install Docker
+  apt:
+    name: [
+      "docker-ce",
+      "docker-ce-cli",
+      "containerd.io"
+    ]
+    update_cache: yes
+  become: yes
+
+- name: Add user to docker group
+  user:
+    name: "{{ansible_user}}"
+    group: docker
+    append: yes
+  become: yes
+
+- name: Download docker-compose
+  get_url: 
+    url : https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/{{ 'docker-compose-' ~ lookup('pipe', 'uname -s') }}{{ '-' ~ lookup('pipe', 'uname -m') }}
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'
+  become: yes
+
+- name: Check if the docker-compose exists
+  stat:
+    path: /usr/bin/docker-compose
+  register: stat_result
+
+- name: Syslink docker-compose executable
+  file:
+    src: "/usr/local/bin/docker-compose"
+    dest: "/usr/bin/docker-compose"
+    state: link
+  become: yes
+  when: not stat_result.stat.exists
+
+- name: Change file ownership, group and permissions
+  file:
+    path: /usr/bin/docker-compose
+    owner: "{{ansible_user}}"
+    group: docker
+    mode: 'u+x,g+x'
+  become: yes
+  when: not stat_result.stat.exists

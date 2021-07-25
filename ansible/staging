@@ -1,0 +1,8 @@
+[web_app]
+192.168.0.111
+
+[all:vars]
+ansible_user=vagrant
+ansible_ssh_private_key_file=/home/juan/devops/devops_challenge/Vagrant/ssh-keys/vagrant_id_rsa
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'

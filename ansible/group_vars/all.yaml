@@ -1,0 +1,4 @@
+---
+project_name: devops_challenge
+docker_compose_version: "1.29.2"
+project_gitPublic: https://github.com/juancbdm/devops_challenge.git

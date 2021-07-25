@@ -1,0 +1,19 @@
+---
+- name: Check if the {{project_name}} exists
+  stat:
+    path: /home/{{ansible_user}}/{{project_name}}
+  register: stat_result
+
+- name:  Git clone web app
+  git:
+    repo: "{{project_gitPublic}}"
+    dest: /home/{{ansible_user}}/{{project_name}}
+    version: master
+  when: not stat_result.stat.exists
+
+- name: Run `docker-compose up`
+  shell:
+    chdir: /home/{{ansible_user}}/{{project_name}}
+    cmd: docker-compose up -d
+  become: yes
+    
