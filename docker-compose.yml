@@ -3,6 +3,7 @@ services:
   postgres-db:
     image: postgres:13.3
     hostname: postgres-db
+    container_name: postgres-db
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -14,6 +15,7 @@ services:
       - backend
   web_api:
     hostname: web_api
+    container_name: web_api
     build:
       context: ./api
       dockerfile: ./Dockerfile
@@ -28,6 +30,7 @@ services:
       - frontend
   web_frontend:
     hostname: web_frontend
+    container_name: web_frontend
     build:
       context: ./web
       dockerfile: ./Dockerfile
