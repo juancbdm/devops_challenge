@@ -21,6 +21,13 @@ services:
       dockerfile: ./Dockerfile
     environment:
       PORT: 8081
+      #or a env file on api folder
+      DB: "postgres://postgres:mysecretpassword@localhost:5432/database"
+      DB_HOST: postgres-db
+      DB_USER: postgres
+      DB_DATABASE: database
+      DB_PASSWORD: mysecretpassword
+      DB_PORT: 5432
     ports:
       - "8081:8081"
     depends_on:
