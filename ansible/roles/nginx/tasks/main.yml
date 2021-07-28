@@ -17,4 +17,4 @@
     dest: "/etc/nginx/sites-available/default"
   become: yes
   notify:
-    - Restart "nginx"
+    - Restart nginx
