@@ -2,3 +2,5 @@
 project_name: devops_challenge
 docker_compose_version: "1.29.2"
 project_gitPublic: https://github.com/juancbdm/devops_challenge.git
+docker_web_app_frontend_port: 8080
+docker_web_app_api_port: 8081

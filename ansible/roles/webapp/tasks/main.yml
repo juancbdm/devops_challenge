@@ -16,4 +16,3 @@
     chdir: /home/{{ansible_user}}/{{project_name}}
     cmd: docker-compose up -d
   become: yes
-    

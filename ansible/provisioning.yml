@@ -1,5 +1,4 @@
 ---
 - hosts: web_app
   roles:
-    - docker
     - webapp

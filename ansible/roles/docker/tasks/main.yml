@@ -1,15 +1,6 @@
-- name: Update apt cache
-  apt:
-    update_cache: yes
-  become: yes
-
-- name: Upgrade all apt packages
-  apt: 
-    upgrade: dist
-  become: yes
-
 - name: Install dependencies
   apt:
+    update_cache: yes
     name: [
       "apt-transport-https",
       "ca-certificates",

@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: database
     ports:
-      - '5432:5432'
+      - '127.0.0.1:5432:5432'
     networks:
       - backend
   web_api:
@@ -29,7 +29,7 @@ services:
       DB_PASSWORD: mysecretpassword
       DB_PORT: 5432
     ports:
-      - "8081:8081"
+      - "127.0.0.1:8081:8081"
     depends_on:
       - postgres-db
     networks:
@@ -46,7 +46,7 @@ services:
       API_HOST: http://web_api:8081
     build: ./web
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     depends_on:
       - web_api
     networks:
